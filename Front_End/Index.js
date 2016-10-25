@@ -8,14 +8,14 @@ import ReduxStore from './Redux/ReduxStore';
 import { Provider } from 'react-redux';
 import { Route, Router, IndexRoute, browserHistory } from 'react-router';
 import NavbarContainer from './Containers/NavbarContainer'
-import NavbarComponent from './Components/NavbarComponent'
+import HomeContainer from './Containers/HomeContainer'
 
 ReactDOM.render(
     <Provider store={ReduxStore}>
         <div className="container flexbox-container">
             <Router history={browserHistory}>
                 <Route path="/" component={NavbarContainer}>
-                    <IndexRoute  />
+                    <IndexRoute component={HomeContainer}/>
                 </Route>
             </Router>
         </div>

@@ -3,19 +3,23 @@
 import React from 'react';
 
 export default class Navbar extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
     render() {
-        console.log('hi');
+        // this.props.children is a parameter passed in 
+        // by react-router for rendering children
         return (
-            <nav className="navbar navbar-default">
-                <div className="container">
-                    <div className="navbar-header">
+            <div>
+                <nav className="navbar navbar-default top-navbar">
+                    <div className="container">
+                        <div className="navbar-header">
+                        </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+                {this.props.children}
+            </div>
         );
     }
 }

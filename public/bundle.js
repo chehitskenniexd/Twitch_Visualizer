@@ -68,9 +68,9 @@
 	
 	var _NavbarContainer2 = _interopRequireDefault(_NavbarContainer);
 	
-	var _NavbarComponent = __webpack_require__(259);
+	var _HomeContainer = __webpack_require__(260);
 	
-	var _NavbarComponent2 = _interopRequireDefault(_NavbarComponent);
+	var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -86,7 +86,7 @@
 	            _react2.default.createElement(
 	                _reactRouter.Route,
 	                { path: '/', component: _NavbarContainer2.default },
-	                _react2.default.createElement(_reactRouter.IndexRoute, null)
+	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _HomeContainer2.default })
 	            )
 	        )
 	    )
@@ -28783,10 +28783,6 @@
 	  value: true
 	});
 	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
 	var _reactRedux = __webpack_require__(196);
 	
 	var _NavbarComponent = __webpack_require__(259);
@@ -28802,7 +28798,9 @@
 	  return null;
 	};
 	
-	exports.default = (0, _reactRedux.connect)(null, null)(_NavbarComponent2.default);
+	exports.default = (0, _reactRedux.connect)(function () {
+	  return {};
+	}, {})(_NavbarComponent2.default);
 
 /***/ },
 /* 259 */
@@ -28840,15 +28838,21 @@
 	    _createClass(Navbar, [{
 	        key: 'render',
 	        value: function render() {
-	            console.log('hi');
+	            // this.props.children is a parameter passed in 
+	            // by react-router for rendering children
 	            return _react2.default.createElement(
-	                'nav',
-	                { className: 'navbar navbar-default' },
+	                'div',
+	                null,
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'container' },
-	                    _react2.default.createElement('div', { className: 'navbar-header' })
-	                )
+	                    'nav',
+	                    { className: 'navbar navbar-default top-navbar' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'container' },
+	                        _react2.default.createElement('div', { className: 'navbar-header' })
+	                    )
+	                ),
+	                this.props.children
 	            );
 	        }
 	    }]);
@@ -28857,6 +28861,103 @@
 	}(_react2.default.Component);
 	
 	exports.default = Navbar;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _reactRedux = __webpack_require__(196);
+	
+	var _HomeComponent = __webpack_require__(261);
+	
+	var _HomeComponent2 = _interopRequireDefault(_HomeComponent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	    return null;
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return null;
+	};
+	
+	exports.default = (0, _reactRedux.connect)(function () {
+	    return {};
+	}, {})(_HomeComponent2.default);
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Home = function (_React$Component) {
+	    _inherits(Home, _React$Component);
+	
+	    function Home(props) {
+	        _classCallCheck(this, Home);
+	
+	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+	
+	        _this.state = {
+	            username: ''
+	        };
+	        _this.onInputChange = _this.onInputChange.bind(_this);
+	        return _this;
+	    }
+	
+	    _createClass(Home, [{
+	        key: 'onInputChange',
+	        value: function onInputChange(event) {
+	            this.setState({ username: event.target.value });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'home-container' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-group input-group-lg home-input' },
+	                    _react2.default.createElement('input', {
+	                        placeholder: 'Twitch Username',
+	                        className: 'form-control',
+	                        onChange: this.onInputChange
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Home;
+	}(_react2.default.Component);
+	
+	exports.default = Home;
 
 /***/ }
 /******/ ]);
