@@ -2,11 +2,21 @@
     background: #6441a4;
 }
 
-.home-input {
+.search-input-group {
     width: 100%;
+    display: inline-flex;
+    padding-top: 7px;
 }
 
 .search-submit-btn {
     background: #6441a4;    
     color: white;
+}
+
+#user-card-content{
+    text-align: center;
+}
+
+#user-card-actions{
+    text-align: center;
 }

@@ -77,15 +77,15 @@
 	
 	var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 	
+	var _UserContainer = __webpack_require__(290);
+	
+	var _UserContainer2 = _interopRequireDefault(_UserContainer);
+	
 	var _UserActions = __webpack_require__(197);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var bHistory = exports.bHistory = _reactRouter.browserHistory;
-	
-	var onEnterReceiveUser = function onEnterReceiveUser(userName) {
-	    _ReduxStore2.default.dispatch((0, _UserActions.receiveUserFromApi)(userName));
-	};
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -100,7 +100,9 @@
 	                _reactRouter.Route,
 	                { path: '/', component: _NavbarContainer2.default },
 	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _HomeContainer2.default }),
-	                _react2.default.createElement(_reactRouter.Route, { path: ':userName', component: _HomeContainer2.default })
+	                _react2.default.createElement(_reactRouter.Route, { path: ':userName',
+	                    component: _UserContainer2.default
+	                })
 	            )
 	        )
 	    )
@@ -30481,9 +30483,7 @@
 	
 	// This callback causes the react-router to link to another path
 	var callback = function callback(name) {
-	    _reactRouter.browserHistory.push({
-	        pathname: '/' + name
-	    });
+	    return _reactRouter.browserHistory.push('/' + name);
 	};
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	    return {
@@ -30559,7 +30559,7 @@
 	                    { onSubmit: this.onInputSubmit },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'input-group input-group-lg home-input' },
+	                        { className: 'input-group input-group-lg search-input-group' },
 	                        _react2.default.createElement('input', {
 	                            placeholder: 'Twitch Username',
 	                            className: 'form-control',
@@ -30585,6 +30585,194 @@
 	}(_react2.default.Component);
 	
 	exports.default = Home;
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _reactRedux = __webpack_require__(224);
+	
+	var _UserComponent = __webpack_require__(291);
+	
+	var _UserComponent2 = _interopRequireDefault(_UserComponent);
+	
+	var _reactRouter = __webpack_require__(233);
+	
+	var _UserActions = __webpack_require__(197);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	    return {
+	        currentUser: state.user
+	    };
+	};
+	
+	var callback = function callback(name) {
+	    return _reactRouter.browserHistory.push('/' + name);
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return {
+	        onLoadSearch: function onLoadSearch(user) {
+	            return dispatch((0, _UserActions.receiveUserFromApi)(user, callback));
+	        }
+	    };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_UserComponent2.default);
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	'user strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(292);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var User = function (_React$Component) {
+	    _inherits(User, _React$Component);
+	
+	    function User(props) {
+	        _classCallCheck(this, User);
+	
+	        return _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
+	    }
+	
+	    _createClass(User, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var currentUser = this.props.currentUser.user;
+	            if (!Object.keys(this.props.currentUser).length) {
+	                this.props.onLoadSearch(this.props.routeParams.userName);
+	                return _react2.default.createElement('div', null);
+	            }
+	            console.log((0, _utils.convertDateToMDY)(currentUser.created_at));
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'user-container' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col s12 m7 lg4 user-name-card' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'card horizontal' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'card-image' },
+	                            _react2.default.createElement('img', { src: currentUser.logo }),
+	                            _react2.default.createElement('span', null)
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'card-stacked' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'card-content', id: 'user-card-content' },
+	                                _react2.default.createElement(
+	                                    'h4',
+	                                    null,
+	                                    '' + currentUser.display_name
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'user-card-info-content' },
+	                                    _react2.default.createElement(
+	                                        'p',
+	                                        null,
+	                                        'Follower Count: ' + currentUser.followers
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'p',
+	                                        null,
+	                                        'View Count: ' + currentUser.views
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'p',
+	                                        null,
+	                                        'Partner Status: ' + (currentUser.partner ? 'Yes' : 'No')
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'p',
+	                                        null,
+	                                        'Game: ' + currentUser.game
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'p',
+	                                        null,
+	                                        'User Since: ' + (0, _utils.convertDateToMDY)(currentUser.created_at)
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'card-action', id: 'user-card-actions' },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { href: 'http://www.twitch.tv/' + currentUser.name },
+	                                    'Twitch Link'
+	                                )
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement('div', { className: 'user-information-cards' })
+	            );
+	        }
+	    }]);
+	
+	    return User;
+	}(_react2.default.Component);
+	
+	exports.default = User;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var convertDateToMDY = exports.convertDateToMDY = function convertDateToMDY(dateTime) {
+	    var _monthObj;
+	
+	    var date = new Date(dateTime);
+	    var monthObj = (_monthObj = {}, _defineProperty(_monthObj, 0, 'Jan'), _defineProperty(_monthObj, 1, 'Feb'), _defineProperty(_monthObj, 2, 'Mar'), _defineProperty(_monthObj, 3, 'Apr'), _defineProperty(_monthObj, 4, 'May'), _defineProperty(_monthObj, 5, 'Jun'), _defineProperty(_monthObj, 6, 'Jul'), _defineProperty(_monthObj, 7, 'Aug'), _defineProperty(_monthObj, 8, 'Sept'), _defineProperty(_monthObj, 9, 'Oct'), _defineProperty(_monthObj, 10, 'Nov'), _defineProperty(_monthObj, 11, 'Dec'), _monthObj);
+	    return monthObj[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+	};
 
 /***/ }
 /******/ ]);

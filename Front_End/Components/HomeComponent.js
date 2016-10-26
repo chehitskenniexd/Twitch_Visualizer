@@ -25,7 +25,7 @@ export default class Home extends React.Component {
         return (
             <div className="home-container">
                 <form onSubmit={this.onInputSubmit}>
-                    <div className="input-group input-group-lg home-input">
+                    <div className="input-group input-group-lg search-input-group">
                         <input
                             placeholder="Twitch Username"
                             className="form-control"
