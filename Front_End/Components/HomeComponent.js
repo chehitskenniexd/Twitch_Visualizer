@@ -15,6 +15,10 @@ export default class Home extends React.Component {
         this.setState({ username: event.target.value });
     }
 
+    onInputSubmit(event) {
+        event.preventDefault();
+    }
+
     render() {
         return (
             <div className="home-container">
