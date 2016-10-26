@@ -9,6 +9,6 @@ import rootReducer from '../Reducers/RootReducer';
 export default createStore(
     rootReducer,
     applyMiddleware(
-        thunkMiddleware, createLogger
+        thunkMiddleware, createLogger()
     )
 );

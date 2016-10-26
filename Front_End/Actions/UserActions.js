@@ -18,9 +18,8 @@ export const receiveUserFromApi = (user, callback) => dispatch => {
         }
     })
         .then(res => {
-                console.log(res.data);
                 dispatch(receiveUser(res.data));
-                callback(res.data.name);
+                callback && callback(res.data.name);
             })
         .catch(err => console.error(`Receiving user: ${user} unsuccessful`, err));
 }

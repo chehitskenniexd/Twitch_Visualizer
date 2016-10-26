@@ -7,8 +7,15 @@ import ReactDOM from 'react-dom';
 import ReduxStore from './Redux/ReduxStore';
 import { Provider } from 'react-redux';
 import { Route, Router, IndexRoute, browserHistory } from 'react-router';
-import NavbarContainer from './Containers/NavbarContainer'
-import HomeContainer from './Containers/HomeContainer'
+import NavbarContainer from './Containers/NavbarContainer';
+import HomeContainer from './Containers/HomeContainer';
+import { receiveUserFromApi } from './Actions/UserActions';
+
+export const bHistory = browserHistory;
+
+const onEnterReceiveUser = (userName) => {
+    ReduxStore.dispatch(receiveUserFromApi(userName));
+}
 
 ReactDOM.render(
     <Provider store={ReduxStore}>
@@ -16,6 +23,7 @@ ReactDOM.render(
             <Router history={browserHistory}>
                 <Route path="/" component={NavbarContainer}>
                     <IndexRoute component={HomeContainer}/>
+                    <Route path=":userName" component={HomeContainer}/>
                 </Route>
             </Router>
         </div>

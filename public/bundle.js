@@ -48,6 +48,11 @@
 	
 	// This will be the entry point for the application rendering
 	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.bHistory = undefined;
+	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -72,7 +77,15 @@
 	
 	var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 	
+	var _UserActions = __webpack_require__(197);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var bHistory = exports.bHistory = _reactRouter.browserHistory;
+	
+	var onEnterReceiveUser = function onEnterReceiveUser(userName) {
+	    _ReduxStore2.default.dispatch((0, _UserActions.receiveUserFromApi)(userName));
+	};
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -86,7 +99,8 @@
 	            _react2.default.createElement(
 	                _reactRouter.Route,
 	                { path: '/', component: _NavbarContainer2.default },
-	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _HomeContainer2.default })
+	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _HomeContainer2.default }),
+	                _react2.default.createElement(_reactRouter.Route, { path: ':userName', component: _HomeContainer2.default })
 	            )
 	        )
 	    )
@@ -21487,7 +21501,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.default = (0, _redux.createStore)(_RootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger2.default));
+	exports.default = (0, _redux.createStore)(_RootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger2.default)()));
 
 /***/ },
 /* 173 */
@@ -23345,9 +23359,8 @@
 	        _axios2.default.get('https://api.twitch.tv/kraken/channels/' + user, {
 	            headers: (_headers = {}, _defineProperty(_headers, 'Client-ID', _twitchClientid.clientId), _defineProperty(_headers, 'Accept', 'application/vnd.twitchtv.v3+json'), _defineProperty(_headers, 'x-api-version', 3), _headers)
 	        }).then(function (res) {
-	            console.log(res.data);
 	            dispatch(receiveUser(res.data));
-	            callback(res.data.name);
+	            callback && callback(res.data.name);
 	        }).catch(function (err) {
 	            return console.error('Receiving user: ' + user + ' unsuccessful', err);
 	        });
@@ -30467,8 +30480,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// This callback causes the react-router to link to another path
-	var callback = function callback(user) {
-	    _reactRouter.browserHistory.push('/${user}');
+	var callback = function callback(name) {
+	    _reactRouter.browserHistory.push({
+	        pathname: '/' + name
+	    });
 	};
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	    return {
@@ -30556,7 +30571,7 @@
 	                            _react2.default.createElement(
 	                                'button',
 	                                { className: 'btn btn-secondary search-submit-btn',
-	                                    type: 'button' },
+	                                    type: 'submit' },
 	                                'Submit'
 	                            )
 	                        )

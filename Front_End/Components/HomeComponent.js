@@ -33,7 +33,7 @@ export default class Home extends React.Component {
                             />
                         <span className="input-group-btn">
                             <button className="btn btn-secondary search-submit-btn"
-                                type="button">Submit</button>
+                                type="submit">Submit</button>
                         </span>
                     </div>
                 </form>
