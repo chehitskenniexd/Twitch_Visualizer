@@ -5,3 +5,8 @@
 .home-input {
     width: 100%;
 }
+
+.search-submit-btn {
+    background: #6441a4;    
+    color: white;
+}

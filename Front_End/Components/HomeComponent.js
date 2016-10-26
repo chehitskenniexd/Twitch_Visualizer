@@ -9,6 +9,7 @@ export default class Home extends React.Component {
             username: '',
         }
         this.onInputChange = this.onInputChange.bind(this);
+        this.onInputSubmit = this.onInputSubmit.bind(this);
     }
 
     onInputChange(event) {
@@ -17,18 +18,25 @@ export default class Home extends React.Component {
 
     onInputSubmit(event) {
         event.preventDefault();
+        this.props.onSearchSubmit(this.state.username);
     }
 
     render() {
         return (
             <div className="home-container">
-                <div className="input-group input-group-lg home-input">
-                    <input 
-                    placeholder="Twitch Username" 
-                    className="form-control"
-                    onChange={this.onInputChange}
-                    />
-                </div>
+                <form onSubmit={this.onInputSubmit}>
+                    <div className="input-group input-group-lg home-input">
+                        <input
+                            placeholder="Twitch Username"
+                            className="form-control"
+                            onChange={this.onInputChange}
+                            />
+                        <span className="input-group-btn">
+                            <button className="btn btn-secondary search-submit-btn"
+                                type="button">Submit</button>
+                        </span>
+                    </div>
+                </form>
             </div>
         );
     }
