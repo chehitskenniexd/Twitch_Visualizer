@@ -30725,7 +30725,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(293);
+	var _utils = __webpack_require__(295);
+	
+	var _channelUtils = __webpack_require__(296);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30741,30 +30743,42 @@
 	    function User(props) {
 	        _classCallCheck(this, User);
 	
-	        return _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
+	
+	        _this.state = {
+	            followerChartData: []
+	        };
+	        return _this;
 	    }
 	
 	    _createClass(User, [{
 	        key: 'render',
 	        value: function render() {
 	            var channel = this.props.channel;
-	            var follows = this.props.channelFollows;
-	            var videos = this.props.channelVideos;
+	            var channelFollows = this.props.channelFollows;
+	            var channelVideos = this.props.channelVideos;
 	            var channelName = this.props.routeParams.channelName;
 	
 	            if (!Object.keys(channel).length) {
 	                this.props.onLoadSearch(channelName);
 	                return _react2.default.createElement('div', null);
 	            }
-	            if (!Object.keys(follows).length) {
+	            if (!Object.keys(channelFollows).length) {
 	                this.props.onLoadSearchFollows(channelName);
 	                return _react2.default.createElement('div', null);
 	            }
-	            if (!Object.keys(videos).length) {
+	            if (!Object.keys(channelVideos).length) {
 	                this.props.onLoadSearchVideos(channelName);
 	                return _react2.default.createElement('div', null);
 	            }
 	
+	            var followsMonthDataObj = (0, _channelUtils.getNumFollowsPerMonth)(channelFollows);
+	            this.state.followerChartData = c3.generate({
+	                bindto: '#follows-chart',
+	                data: {
+	                    columns: [(0, _channelUtils.convertFollowsMonthObjToC3Data)(followsMonthDataObj, 'Number of Follows')]
+	                }
+	            });
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'user-container' },
@@ -30845,8 +30859,9 @@
 	                            _react2.default.createElement(
 	                                'span',
 	                                { className: 'card-title activator grey-text text-darken-4' },
-	                                'Followers'
-	                            )
+	                                '100 Most Recent Followers'
+	                            ),
+	                            _react2.default.createElement('div', { id: 'follows-chart' })
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
@@ -30859,7 +30874,7 @@
 	                            _react2.default.createElement(
 	                                'p',
 	                                null,
-	                                'Total Followers: ' + follows._total
+	                                'Total Followers: ' + channelFollows._total
 	                            )
 	                        )
 	                    ),
@@ -30886,7 +30901,7 @@
 	                            _react2.default.createElement(
 	                                'p',
 	                                null,
-	                                'Total Videos: ' + videos._total
+	                                'Total Videos: ' + channelVideos._total
 	                            )
 	                        )
 	                    )
@@ -30901,26 +30916,7 @@
 	exports.default = User;
 
 /***/ },
-/* 293 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	var convertDateToMDY = exports.convertDateToMDY = function convertDateToMDY(dateTime) {
-	    var _monthObj;
-	
-	    var date = new Date(dateTime);
-	    var monthObj = (_monthObj = {}, _defineProperty(_monthObj, 0, 'Jan'), _defineProperty(_monthObj, 1, 'Feb'), _defineProperty(_monthObj, 2, 'Mar'), _defineProperty(_monthObj, 3, 'Apr'), _defineProperty(_monthObj, 4, 'May'), _defineProperty(_monthObj, 5, 'Jun'), _defineProperty(_monthObj, 6, 'Jul'), _defineProperty(_monthObj, 7, 'Aug'), _defineProperty(_monthObj, 8, 'Sept'), _defineProperty(_monthObj, 9, 'Oct'), _defineProperty(_monthObj, 10, 'Nov'), _defineProperty(_monthObj, 11, 'Dec'), _monthObj);
-	    return monthObj[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
-	};
-
-/***/ },
+/* 293 */,
 /* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -30943,6 +30939,82 @@
 	        default:
 	            return prevState;
 	    }
+	}
+
+/***/ },
+/* 295 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _monthObj;
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var monthObj = (_monthObj = {}, _defineProperty(_monthObj, 0, 'Jan'), _defineProperty(_monthObj, 1, 'Feb'), _defineProperty(_monthObj, 2, 'Mar'), _defineProperty(_monthObj, 3, 'Apr'), _defineProperty(_monthObj, 4, 'May'), _defineProperty(_monthObj, 5, 'Jun'), _defineProperty(_monthObj, 6, 'Jul'), _defineProperty(_monthObj, 7, 'Aug'), _defineProperty(_monthObj, 8, 'Sept'), _defineProperty(_monthObj, 9, 'Oct'), _defineProperty(_monthObj, 10, 'Nov'), _defineProperty(_monthObj, 11, 'Dec'), _monthObj);
+	
+	var getMonthByInt = exports.getMonthByInt = function getMonthByInt(int) {
+	    return monthObj[int];
+	};
+	
+	var convertDateToMDY = exports.convertDateToMDY = function convertDateToMDY(dateTime) {
+	    var date = new Date(dateTime);
+	    return monthObj[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+	};
+
+/***/ },
+/* 296 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.getNumFollowsPerMonth = getNumFollowsPerMonth;
+	exports.convertFollowsMonthObjToC3Data = convertFollowsMonthObjToC3Data;
+	function getNumFollowsPerMonth(channelFollows) {
+	    // This will convert an array of follows into an object with year/month(int)/count
+	    // Example: output[2016][0] = numUsers;
+	    var output = {};
+	    channelFollows.follows.forEach(function (follow) {
+	        var created = new Date(follow.created_at);
+	        var year = created.getFullYear();
+	        var month = created.getMonth();
+	
+	        // Check if the year object exists
+	        if (!output[year]) {
+	            output[year] = {};
+	        }
+	        if (!output[year][month]) {
+	            output[year][month] = 0;
+	        }
+	
+	        output[year][month] = output[year][month] + 1;
+	    });
+	
+	    return output;
+	}
+	
+	function convertFollowsMonthObjToC3Data(dataObject, type) {
+	    // Returns an array of the number of items in a month
+	    // Remember: Month Obj looks like: { { year: { month: num } } }
+	    var valueArray = ['' + type];
+	
+	    console.log(Object.keys(dataObject));
+	
+	    for (var year in dataObject) {
+	        for (var month in dataObject[year]) {
+	            valueArray.push(dataObject[year][month]);
+	        }
+	    }
+	
+	    console.log(valueArray);
+	    return valueArray;
 	}
 
 /***/ }

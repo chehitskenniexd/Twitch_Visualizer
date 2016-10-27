@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
 
-        <!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js" defer></script>
-        
-        <!-- Reference to external CSS dependencies-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js" defer></script>
+<head>
+	<meta charset="UTF-8">
 
-        <!-- Reference to local CSS dependencies -->
-        <link rel="stylesheet" href="/main.css" />
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js" defer></script>
 
-        <!-- Reference to the local bundle dependencies -->
-        <script src="/bundle.js" defer></script>
+	<!-- Reference to external CSS dependencies-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js" defer></script>
 
-        <title>Twitch Visualizer</title>
-    </head>
+	<!-- Load c3.css -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" />
 
-    <body>
-        <div id="app"></div>
-    </body>
+	<!-- Load d3.js and c3.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js" defer></script>
+
+	<!-- Reference to local CSS dependencies -->
+	<link rel="stylesheet" href="/main.css" />
+
+	<!-- Reference to the local bundle dependencies -->
+	<script src="/bundle.js" defer></script>
+
+	<title>Twitch Visualizer</title>
+</head>
+
+<body>
+	<div id="app"></div>
+</body>
+
 </html>
