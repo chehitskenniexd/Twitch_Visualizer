@@ -2,12 +2,12 @@
 
 import { connect } from 'react-redux';
 import NavbarComponent from '../Components/NavbarComponent';
-import { receiveUserFromApi } from '../Actions/UserActions';
+import { receiveChannelFromApi } from '../Actions/ChannelActions';
 import { browserHistory } from 'react-router'
 
 const mapStateToProps = (state, ownProps) => null
 
-const callback = user => { browserHistory.push('/${user}') }
+const callback = channel => { browserHistory.push('/${channel}') }
 const mapDispatchToProps =  (dispatch, ownProps) => {}
 
 export default connect(() => ({}), {})(NavbarComponent);

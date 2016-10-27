@@ -8,13 +8,13 @@ export default class User extends React.Component {
         super(props);
     }
 
-    componentWillMount() {
-    }
-
     render() {
-        const currentUser = this.props.currentUser.user;
-        if (!Object.keys(this.props.currentUser).length) {
-            this.props.onLoadSearch(this.props.routeParams.userName);
+        const channel = this.props.channel;
+        if (!Object.keys(this.props.channel).length) {
+            const channelName = this.props.routeParams.channelName;
+            this.props.onLoadSearch(channelName);
+            this.props.onLoadSearchFollows(channelName);
+            this.props.onLoadSearchVideos(channelName);
             return <div></div>;
         }
 
@@ -23,22 +23,22 @@ export default class User extends React.Component {
                 <div className="col s12 m7 lg4 user-name-card">
                     <div className="card horizontal">
                         <div className="card-image">
-                            <img src={currentUser.logo}></img>
+                            <img src={channel.logo}></img>
                             <span></span>
                         </div>
                         <div className="card-stacked">
                             <div className="card-content" id="user-card-content">
-                                <h4>{`${currentUser.display_name}`}</h4>
+                                <h4>{`${channel.display_name}`}</h4>
                                 <div className="user-card-info-content">
-                                    <p>{`Follower Count: ${currentUser.followers}`}</p>
-                                    <p>{`View Count: ${currentUser.views}`}</p>
-                                    <p>{`Partner Status: ${currentUser.partner ? 'Yes' : 'No'}`}</p>
-                                    <p>{`Game: ${currentUser.game}`}</p>
-                                    <p>{`User Since: ${convertDateToMDY(currentUser.created_at)}`}</p>
+                                    <p>{`Follower Count: ${channel.followers}`}</p>
+                                    <p>{`View Count: ${channel.views}`}</p>
+                                    <p>{`Partner Status: ${channel.partner ? 'Yes' : 'No'}`}</p>
+                                    <p>{`Game: ${channel.game}`}</p>
+                                    <p>{`User Since: ${convertDateToMDY(channel.created_at)}`}</p>
                                 </div>
                             </div>
                             <div className="card-action" id="user-card-actions">
-                                <a href={`http://www.twitch.tv/${currentUser.name}`}>Twitch Link</a>
+                                <a href={`http://www.twitch.tv/${channel.name}`}>Twitch Link</a>
                             </div>
                         </div>
                     </div>

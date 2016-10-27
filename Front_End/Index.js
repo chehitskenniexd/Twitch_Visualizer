@@ -9,8 +9,7 @@ import { Provider } from 'react-redux';
 import { Route, Router, IndexRoute, browserHistory } from 'react-router';
 import NavbarContainer from './Containers/NavbarContainer';
 import SearchContainer from './Containers/SearchContainer';
-import UserContainer from './Containers/UserContainer';
-import { receiveUserFromApi } from './Actions/UserActions';
+import ChannelContainer from './Containers/ChannelContainer';
 
 export const bHistory = browserHistory;
 
@@ -20,8 +19,8 @@ ReactDOM.render(
             <Router history={browserHistory}>
                 <Route path="/" component={NavbarContainer}>
                     <IndexRoute component={SearchContainer} />
-                    <Route path=":userName" 
-                    component={UserContainer} 
+                    <Route path=":channelName" 
+                    component={ChannelContainer} 
                     />
                 </Route>
             </Router>
