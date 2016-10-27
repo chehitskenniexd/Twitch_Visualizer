@@ -10,10 +10,19 @@ export default class User extends React.Component {
 
     render() {
         const channel = this.props.channel;
-        if (!Object.keys(this.props.channel).length) {
-            const channelName = this.props.routeParams.channelName;
+        const follows = this.props.channelFollows;
+        const videos = this.props.channelVideos;            
+        const channelName = this.props.routeParams.channelName;
+
+        if (!Object.keys(channel).length) {
             this.props.onLoadSearch(channelName);
+            return <div></div>;
+        }
+        if (!Object.keys(follows).length) {
             this.props.onLoadSearchFollows(channelName);
+            return <div></div>;
+        }
+        if (!Object.keys(videos).length) {
             this.props.onLoadSearchVideos(channelName);
             return <div></div>;
         }
@@ -44,7 +53,25 @@ export default class User extends React.Component {
                     </div>
                 </div>
                 <div className="user-information-cards">
-                    
+                    <div className="card" id="follows-info-card">
+                        <div className="card-content">
+                            <span className="card-title activator grey-text text-darken-4">Followers</span>
+                        </div>
+                        <div className="card-reveal">
+                            <span className="card-title activator grey-text text-darken-4">Followers</span>
+                            <p>{`Total Followers: ${follows._total}`}</p>
+                        </div>
+                    </div>
+
+                    <div className="card" id="videos-info-card">
+                        <div className="card-content">
+                            <span className="card-title activator grey-text text-darken-4">Videos</span>
+                        </div>
+                        <div className="card-reveal">
+                            <span className="card-title activator grey-text text-darken-4">Videos</span>
+                            <p>{`Total Videos: ${videos._total}`}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

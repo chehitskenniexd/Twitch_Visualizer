@@ -23312,12 +23312,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = userReducer;
+	exports.default = channelReducer;
 	
 	var _ChannelActions = __webpack_require__(197);
 	
 	// Reducer for User
-	function userReducer() {
+	function channelReducer() {
 	    var prevState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    var action = arguments[1];
 	
@@ -30748,10 +30748,19 @@
 	        key: 'render',
 	        value: function render() {
 	            var channel = this.props.channel;
-	            if (!Object.keys(this.props.channel).length) {
-	                var channelName = this.props.routeParams.channelName;
+	            var follows = this.props.channelFollows;
+	            var videos = this.props.channelVideos;
+	            var channelName = this.props.routeParams.channelName;
+	
+	            if (!Object.keys(channel).length) {
 	                this.props.onLoadSearch(channelName);
+	                return _react2.default.createElement('div', null);
+	            }
+	            if (!Object.keys(follows).length) {
 	                this.props.onLoadSearchFollows(channelName);
+	                return _react2.default.createElement('div', null);
+	            }
+	            if (!Object.keys(videos).length) {
 	                this.props.onLoadSearchVideos(channelName);
 	                return _react2.default.createElement('div', null);
 	            }
@@ -30824,7 +30833,64 @@
 	                        )
 	                    )
 	                ),
-	                _react2.default.createElement('div', { className: 'user-information-cards' })
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'user-information-cards' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'card', id: 'follows-info-card' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'card-content' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'card-title activator grey-text text-darken-4' },
+	                                'Followers'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'card-reveal' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'card-title activator grey-text text-darken-4' },
+	                                'Followers'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Total Followers: ' + follows._total
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'card', id: 'videos-info-card' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'card-content' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'card-title activator grey-text text-darken-4' },
+	                                'Videos'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'card-reveal' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'card-title activator grey-text text-darken-4' },
+	                                'Videos'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Total Videos: ' + videos._total
+	                            )
+	                        )
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -30856,9 +30922,28 @@
 
 /***/ },
 /* 294 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = channelVideosReducer;
+	
+	var _ChannelActions = __webpack_require__(197);
+	
+	function channelVideosReducer() {
+	    var prevState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+	
+	    switch (action.type) {
+	        case _ChannelActions.RECEIVE_CHANNEL_VIDEOS:
+	            return action.channelVideos;
+	        default:
+	            return prevState;
+	    }
+	}
 
 /***/ }
 /******/ ]);
