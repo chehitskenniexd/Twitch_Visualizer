@@ -17,7 +17,6 @@ export default class User extends React.Component {
             this.props.onLoadSearch(this.props.routeParams.userName);
             return <div></div>;
         }
-        console.log(convertDateToMDY(currentUser.created_at));
 
         return (
             <div className="user-container">

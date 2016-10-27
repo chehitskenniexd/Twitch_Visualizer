@@ -73,9 +73,9 @@
 	
 	var _NavbarContainer2 = _interopRequireDefault(_NavbarContainer);
 	
-	var _HomeContainer = __webpack_require__(288);
+	var _SearchContainer = __webpack_require__(288);
 	
-	var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
+	var _SearchContainer2 = _interopRequireDefault(_SearchContainer);
 	
 	var _UserContainer = __webpack_require__(290);
 	
@@ -99,7 +99,7 @@
 	            _react2.default.createElement(
 	                _reactRouter.Route,
 	                { path: '/', component: _NavbarContainer2.default },
-	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _HomeContainer2.default }),
+	                _react2.default.createElement(_reactRouter.IndexRoute, { component: _SearchContainer2.default }),
 	                _react2.default.createElement(_reactRouter.Route, { path: ':userName',
 	                    component: _UserContainer2.default
 	                })
@@ -30471,9 +30471,9 @@
 	
 	var _reactRedux = __webpack_require__(224);
 	
-	var _HomeComponent = __webpack_require__(289);
+	var _SearchComponent = __webpack_require__(289);
 	
-	var _HomeComponent2 = _interopRequireDefault(_HomeComponent);
+	var _SearchComponent2 = _interopRequireDefault(_SearchComponent);
 	
 	var _UserActions = __webpack_require__(197);
 	
@@ -30495,7 +30495,7 @@
 	
 	exports.default = (0, _reactRedux.connect)(function () {
 	    return {};
-	}, mapDispatchToProps)(_HomeComponent2.default);
+	}, mapDispatchToProps)(_SearchComponent2.default);
 
 /***/ },
 /* 289 */
@@ -30521,13 +30521,13 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Home = function (_React$Component) {
-	    _inherits(Home, _React$Component);
+	var Search = function (_React$Component) {
+	    _inherits(Search, _React$Component);
 	
-	    function Home(props) {
-	        _classCallCheck(this, Home);
+	    function Search(props) {
+	        _classCallCheck(this, Search);
 	
-	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 	
 	        _this.state = {
 	            username: ''
@@ -30537,7 +30537,7 @@
 	        return _this;
 	    }
 	
-	    _createClass(Home, [{
+	    _createClass(Search, [{
 	        key: 'onInputChange',
 	        value: function onInputChange(event) {
 	            this.setState({ username: event.target.value });
@@ -30553,7 +30553,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'home-container' },
+	                { className: 'search-container' },
 	                _react2.default.createElement(
 	                    'form',
 	                    { onSubmit: this.onInputSubmit },
@@ -30581,10 +30581,10 @@
 	        }
 	    }]);
 	
-	    return Home;
+	    return Search;
 	}(_react2.default.Component);
 	
-	exports.default = Home;
+	exports.default = Search;
 
 /***/ },
 /* 290 */
@@ -30674,7 +30674,6 @@
 	                this.props.onLoadSearch(this.props.routeParams.userName);
 	                return _react2.default.createElement('div', null);
 	            }
-	            console.log((0, _utils.convertDateToMDY)(currentUser.created_at));
 	
 	            return _react2.default.createElement(
 	                'div',

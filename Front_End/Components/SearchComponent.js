@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default class Home extends React.Component {
+export default class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <div className="home-container">
+            <div className="search-container">
                 <form onSubmit={this.onInputSubmit}>
                     <div className="input-group input-group-lg search-input-group">
                         <input

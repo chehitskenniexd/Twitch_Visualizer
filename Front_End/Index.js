@@ -8,7 +8,7 @@ import ReduxStore from './Redux/ReduxStore';
 import { Provider } from 'react-redux';
 import { Route, Router, IndexRoute, browserHistory } from 'react-router';
 import NavbarContainer from './Containers/NavbarContainer';
-import HomeContainer from './Containers/HomeContainer';
+import SearchContainer from './Containers/SearchContainer';
 import UserContainer from './Containers/UserContainer';
 import { receiveUserFromApi } from './Actions/UserActions';
 
@@ -19,7 +19,7 @@ ReactDOM.render(
         <div className="container flexbox-container">
             <Router history={browserHistory}>
                 <Route path="/" component={NavbarContainer}>
-                    <IndexRoute component={HomeContainer} />
+                    <IndexRoute component={SearchContainer} />
                     <Route path=":userName" 
                     component={UserContainer} 
                     />

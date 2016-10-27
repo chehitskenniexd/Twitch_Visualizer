@@ -1,7 +1,7 @@
 'use strict'
 
 import { connect } from 'react-redux';
-import HomeComponent from '../Components/HomeComponent'
+import SearchComponent from '../Components/SearchComponent'
 import { receiveUserFromApi } from '../Actions/UserActions';
 import { browserHistory } from 'react-router'
 
@@ -11,4 +11,4 @@ const mapDispatchToProps =  (dispatch, ownProps) => ({
     onSearchSubmit: (user) => dispatch(receiveUserFromApi(user, callback))
 })
 
-export default connect(() => ({}), mapDispatchToProps)(HomeComponent);
+export default connect(() => ({}), mapDispatchToProps)(SearchComponent);
