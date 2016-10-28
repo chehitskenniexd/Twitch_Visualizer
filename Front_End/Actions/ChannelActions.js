@@ -54,7 +54,6 @@ export const receiveChannelVideosFromApi = (channel, callback) => dispatch => {
         }
     })
         .then(res => {
-                console.log(res.data);
                 dispatch(receiveChannelVideos(res.data));
                 callback && callback(`${res.data.name}/videos`);
             })

@@ -23407,7 +23407,6 @@
 	        _axios2.default.get('https://api.twitch.tv/kraken/channels/' + channel + '/videos?limit=100', {
 	            headers: (_headers3 = {}, _defineProperty(_headers3, 'Client-ID', _twitchClientid.clientId), _defineProperty(_headers3, 'Accept', 'application/vnd.twitchtv.v3+json'), _defineProperty(_headers3, 'x-api-version', 3), _headers3)
 	        }).then(function (res) {
-	            console.log(res.data);
 	            dispatch(receiveChannelVideos(res.data));
 	            callback && callback(res.data.name + '/videos');
 	        }).catch(function (err) {
@@ -30773,10 +30772,11 @@
 	            }
 	
 	            var followsMonthDataObj = (0, _channelUtils.getNumFollowsPerMonth)(channelFollows);
+	            var c3Data = (0, _channelUtils.convertFollowsMonthObjToC3Data)(followsMonthDataObj, 'Number of Follows');
 	            this.state.followerChartData = c3.generate({
 	                bindto: '#follows-chart',
 	                data: {
-	                    columns: [(0, _channelUtils.convertFollowsMonthObjToC3Data)(followsMonthDataObj, 'Number of Follows')]
+	                    columns: [c3Data]
 	                }
 	            });
 	            return _react2.default.createElement(
@@ -31004,8 +31004,6 @@
 	    // Returns an array of the number of items in a month
 	    // Remember: Month Obj looks like: { { year: { month: num } } }
 	    var valueArray = ['' + type];
-	
-	    console.log(Object.keys(dataObject));
 	
 	    for (var year in dataObject) {
 	        for (var month in dataObject[year]) {

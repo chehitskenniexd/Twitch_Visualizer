@@ -23,8 +23,6 @@ export function convertFollowsMonthObjToC3Data(dataObject, type) {
     // Returns an array of the number of items in a month
     // Remember: Month Obj looks like: { { year: { month: num } } }
     let valueArray = [`${type}`];
-
-    console.log(Object.keys(dataObject));
     
     for(var year in dataObject){
         for(var month in dataObject[year]){

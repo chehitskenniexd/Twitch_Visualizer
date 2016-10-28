@@ -32,11 +32,12 @@ export default class User extends React.Component {
         }
         
         const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
+        const c3Data = convertFollowsMonthObjToC3Data(followsMonthDataObj, 'Number of Follows')
         this.state.followerChartData = c3.generate({
             bindto: '#follows-chart',
             data: {
                 columns: [
-                    convertFollowsMonthObjToC3Data(followsMonthDataObj, 'Number of Follows')
+                    c3Data
                 ]
             }
         })
