@@ -2,13 +2,15 @@
 
 import React from 'react'
 import { convertDateToMDY } from '../../Utilities/utils';
-import { getNumFollowsPerMonth, convertFollowsMonthObjToC3Data } from '../../Utilities/channelUtils';
+import { getNumFollowsPerMonth, convertFollowsMonthObjToC3Data,
+    getNumViewsPerMonth, convertViewsVideoObjToC3Data } from '../../Utilities/channelUtils';
 
 export default class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            followerChartData: []
+            followerChartData: [],
+            videoViewsChartData: []
         }
     }
 
@@ -32,15 +34,23 @@ export default class User extends React.Component {
         }
         
         const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
-        const c3Data = convertFollowsMonthObjToC3Data(followsMonthDataObj, 'Number of Follows')
+        const followerC3Data = convertFollowsMonthObjToC3Data(followsMonthDataObj, 'Number of Follows');
         this.state.followerChartData = c3.generate({
             bindto: '#follows-chart',
             data: {
-                columns: [
-                    c3Data
-                ]
+                columns: [followerC3Data]
             }
         })
+
+        const videoViewsDataObj = getNumViewsPerMonth(channelVideos);
+        const videoViewsC3Data = convertViewsVideoObjToC3Data(videoViewsDataObj, 'Number of Views');
+        this.state.videoViewsChartData = c3.generate({
+            bindto: '#videos-views-chart',
+            data: {
+                columns: [videoViewsC3Data]
+            }
+        })
+
         return (
             <div className="user-container">
                 <div className="col s12 m7 lg4 user-name-card">
@@ -70,7 +80,7 @@ export default class User extends React.Component {
                     <div className="card" id="follows-info-card">
                         <div className="card-content">
                             <span className="card-title activator grey-text text-darken-4">
-                            100 Most Recent Followers
+                            100 Most Recent Followers Per Month
                             </span>
                             <div id="follows-chart"></div>
                         </div>
@@ -83,8 +93,9 @@ export default class User extends React.Component {
                     <div className="card" id="videos-info-card">
                         <div className="card-content">
                             <span className="card-title activator grey-text text-darken-4">
-                            Videos
+                            Number of views of {`${channelVideos.videos.length}`} Most Recent Videos
                             </span>
+                            <div id="videos-views-chart"></div>
                         </div>
                         <div className="card-reveal">
                             <span className="card-title activator grey-text text-darken-4">Videos</span>

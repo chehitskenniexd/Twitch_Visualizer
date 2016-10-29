@@ -30745,7 +30745,8 @@
 	        var _this = _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
 	
 	        _this.state = {
-	            followerChartData: []
+	            followerChartData: [],
+	            videoViewsChartData: []
 	        };
 	        return _this;
 	    }
@@ -30772,13 +30773,23 @@
 	            }
 	
 	            var followsMonthDataObj = (0, _channelUtils.getNumFollowsPerMonth)(channelFollows);
-	            var c3Data = (0, _channelUtils.convertFollowsMonthObjToC3Data)(followsMonthDataObj, 'Number of Follows');
+	            var followerC3Data = (0, _channelUtils.convertFollowsMonthObjToC3Data)(followsMonthDataObj, 'Number of Follows');
 	            this.state.followerChartData = c3.generate({
 	                bindto: '#follows-chart',
 	                data: {
-	                    columns: [c3Data]
+	                    columns: [followerC3Data]
 	                }
 	            });
+	
+	            var videoViewsDataObj = (0, _channelUtils.getNumViewsPerMonth)(channelVideos);
+	            var videoViewsC3Data = (0, _channelUtils.convertViewsVideoObjToC3Data)(videoViewsDataObj, 'Number of Views');
+	            this.state.videoViewsChartData = c3.generate({
+	                bindto: '#videos-views-chart',
+	                data: {
+	                    columns: [videoViewsC3Data]
+	                }
+	            });
+	
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'user-container' },
@@ -30859,7 +30870,7 @@
 	                            _react2.default.createElement(
 	                                'span',
 	                                { className: 'card-title activator grey-text text-darken-4' },
-	                                '100 Most Recent Followers'
+	                                '100 Most Recent Followers Per Month'
 	                            ),
 	                            _react2.default.createElement('div', { id: 'follows-chart' })
 	                        ),
@@ -30887,8 +30898,11 @@
 	                            _react2.default.createElement(
 	                                'span',
 	                                { className: 'card-title activator grey-text text-darken-4' },
-	                                'Videos'
-	                            )
+	                                'Number of views of ',
+	                                '' + channelVideos.videos.length,
+	                                ' Most Recent Videos'
+	                            ),
+	                            _react2.default.createElement('div', { id: 'videos-views-chart' })
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
@@ -30976,7 +30990,9 @@
 	    value: true
 	});
 	exports.getNumFollowsPerMonth = getNumFollowsPerMonth;
+	exports.getNumViewsPerMonth = getNumViewsPerMonth;
 	exports.convertFollowsMonthObjToC3Data = convertFollowsMonthObjToC3Data;
+	exports.convertViewsVideoObjToC3Data = convertViewsVideoObjToC3Data;
 	function getNumFollowsPerMonth(channelFollows) {
 	    // This will convert an array of follows into an object with year/month(int)/count
 	    // Example: output[2016][0] = numUsers;
@@ -31000,6 +31016,19 @@
 	    return output;
 	}
 	
+	function getNumViewsPerMonth(channelVideos) {
+	    // This will convert and array of videos into an object with videoIndex/numViews
+	    // Exmaple: output[2016][0] = numViews;
+	    var output = {};
+	    var videoIndex = channelVideos.videos.length;
+	
+	    channelVideos.videos.forEach(function (video) {
+	        output[videoIndex--] = video.views;
+	    });
+	
+	    return output;
+	}
+	
 	function convertFollowsMonthObjToC3Data(dataObject, type) {
 	    // Returns an array of the number of items in a month
 	    // Remember: Month Obj looks like: { { year: { month: num } } }
@@ -31009,6 +31038,19 @@
 	        for (var month in dataObject[year]) {
 	            valueArray.push(dataObject[year][month]);
 	        }
+	    }
+	
+	    return valueArray;
+	}
+	
+	function convertViewsVideoObjToC3Data(dataObject, type) {
+	    // Returns an array of the number of views per video
+	    // Remember: Video Oby looks like: { videoIndex: numViews }
+	
+	    var valueArray = ['' + type];
+	
+	    for (var video in dataObject) {
+	        valueArray.push(dataObject[video]);
 	    }
 	
 	    console.log(valueArray);

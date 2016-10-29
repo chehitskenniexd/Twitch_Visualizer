@@ -19,15 +19,41 @@ export function getNumFollowsPerMonth(channelFollows) {
     return output;
 }
 
+export function getNumViewsPerMonth(channelVideos) {
+    // This will convert and array of videos into an object with videoIndex/numViews
+    // Exmaple: output[2016][0] = numViews;
+    let output = {};
+    let videoIndex = channelVideos.videos.length;
+
+    channelVideos.videos.forEach(video => {
+        output[videoIndex--] = video.views;
+    })
+
+    return output;
+}
+
 export function convertFollowsMonthObjToC3Data(dataObject, type) {
     // Returns an array of the number of items in a month
     // Remember: Month Obj looks like: { { year: { month: num } } }
     let valueArray = [`${type}`];
-    
-    for(var year in dataObject){
-        for(var month in dataObject[year]){
-            valueArray.push(dataObject[year][month])
+
+    for (var year in dataObject) {
+        for (var month in dataObject[year]) {
+            valueArray.push(dataObject[year][month]);
         }
+    }
+
+    return valueArray;
+}
+
+export function convertViewsVideoObjToC3Data(dataObject, type) {
+    // Returns an array of the number of views per video
+    // Remember: Video Oby looks like: { videoIndex: numViews }
+
+    let valueArray = [`${type}`];
+
+    for (var video in dataObject) {
+        valueArray.push(dataObject[video]);
     }
 
     console.log(valueArray);
