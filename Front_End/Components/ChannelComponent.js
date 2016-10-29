@@ -80,7 +80,7 @@ export default class User extends React.Component {
                     <div className="card" id="follows-info-card">
                         <div className="card-content">
                             <span className="card-title activator grey-text text-darken-4">
-                            100 Most Recent Followers Per Month
+                            Follows Per Month for {`${channelFollows.follows.length}`} Most Recent Follows
                             </span>
                             <div id="follows-chart"></div>
                         </div>
@@ -93,7 +93,7 @@ export default class User extends React.Component {
                     <div className="card" id="videos-info-card">
                         <div className="card-content">
                             <span className="card-title activator grey-text text-darken-4">
-                            Number of views of {`${channelVideos.videos.length}`} Most Recent Videos
+                            Number of Views: {`${channelVideos.videos.length}`} Most Recent Videos
                             </span>
                             <div id="videos-views-chart"></div>
                         </div>

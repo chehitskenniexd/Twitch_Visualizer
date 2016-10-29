@@ -1,5 +1,6 @@
 import { clientId } from '../../private/twitch.clientid.js';
 import axios from 'axios';
+import { generateAxiosGetPromise } from '../../Utilities/axiosUtils';
 
 // Create constants for User Actions
 export const RECEIVE_CHANNEL = 'RECEIVE_CHANNEL'
@@ -14,13 +15,7 @@ const receiveChannelVideos = channelVideos => ({ type: RECEIVE_CHANNEL_VIDEOS, c
 //Thunk Creators
 export const receiveChannelFromApi = (channel, callback) => dispatch => {
     //Receive info from the Api
-    axios.get(`https://api.twitch.tv/kraken/channels/${channel}`, {
-        headers: {
-            [`Client-ID`]: clientId,
-            Accept: `application/vnd.twitchtv.v3+json`,
-            [`x-api-version`]: 3
-        }
-    })
+    generateAxiosGetPromise(channel)
         .then(res => {
                 dispatch(receiveChannel(res.data));
                 callback && callback(res.data.name);
@@ -30,13 +25,7 @@ export const receiveChannelFromApi = (channel, callback) => dispatch => {
 
 export const receiveChannelFollowsFromApi = (channel, callback) => dispatch => {
     // Receive follows from the Api
-    axios.get(`https://api.twitch.tv/kraken/channels/${channel}/follows?limit=100`, {
-        headers: {
-            [`Client-ID`]: clientId,
-            Accept: `application/vnd.twitchtv.v3+json`,
-            [`x-api-version`]: 3
-        }
-    })
+    generateAxiosGetPromise(channel, 'follows', 'limit=100')
         .then(res => {
                 dispatch(receiveChannelFollows(res.data));
                 callback && callback(`${res.data.name}/follows`);
@@ -46,13 +35,7 @@ export const receiveChannelFollowsFromApi = (channel, callback) => dispatch => {
 
 export const receiveChannelVideosFromApi = (channel, callback) => dispatch => {
     // Receive videos from the Api
-    axios.get(`https://api.twitch.tv/kraken/channels/${channel}/videos?limit=100`, {
-        headers: {
-            [`Client-ID`]: clientId,
-            Accept: `application/vnd.twitchtv.v3+json`,
-            [`x-api-version`]: 3
-        }
-    })
+    generateAxiosGetPromise(channel, 'videos', 'limit=100')
         .then(res => {
                 dispatch(receiveChannelVideos(res.data));
                 callback && callback(`${res.data.name}/videos`);

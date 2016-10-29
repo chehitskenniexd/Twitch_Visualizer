@@ -55,7 +55,5 @@ export function convertViewsVideoObjToC3Data(dataObject, type) {
     for (var video in dataObject) {
         valueArray.push(dataObject[video]);
     }
-
-    console.log(valueArray);
     return valueArray;
 }
