@@ -55,36 +55,38 @@ export default class User extends React.Component {
 
         return (
             <div className="user-container">
-                <div className="col s12 m7 lg4 user-name-card">
-                    <div className="card horizontal">
-                        <div className="card-image">
-                            <img src={channel.logo}></img>
-                            <span></span>
-                        </div>
-                        <div className="card-stacked">
-                            <div className="card-content" id="user-card-content">
-                                <h4>{`${channel.display_name}`}</h4>
-                                <div className="user-card-info-content">
-                                    <p>{`Follower Count: ${channel.followers}`}</p>
-                                    <p>{`View Count: ${channel.views}`}</p>
-                                    <p>{`Partner Status: ${channel.partner ? 'Yes' : 'No'}`}</p>
-                                    <p>{`Game: ${channel.game}`}</p>
-                                    <p>{`User Since: ${convertDateToMDY(channel.created_at)}`}</p>
-                                </div>
+                <div className="row">
+                    <div className="col s12 m12 lg12 user-name-card">
+                        <div className="card horizontal">
+                            <div className="card-image">
+                                <img src={channel.logo}></img>
+                                <span></span>
                             </div>
-                            <div className="card-action" id="user-card-actions">
-                                <a href={`http://www.twitch.tv/${channel.name}`}>Twitch Link</a>
+                            <div className="card-stacked">
+                                <div className="card-content" id="user-card-content">
+                                    <h4>{`${channel.display_name}`}</h4>
+                                    <div className="user-card-info-content">
+                                        <p>{`Follower Count: ${channel.followers}`}</p>
+                                        <p>{`View Count: ${channel.views}`}</p>
+                                        <p>{`Partner Status: ${channel.partner ? 'Yes' : 'No'}`}</p>
+                                        <p>{`Game: ${channel.game}`}</p>
+                                        <p>{`User Since: ${convertDateToMDY(channel.created_at)}`}</p>
+                                    </div>
+                                </div>
+                                <div className="card-action" id="user-card-actions">
+                                    <a href={`http://www.twitch.tv/${channel.name}`}>Twitch Link</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="user-information-cards">
                     <div className="row">
-                        <div className="col s12 m8 l6">
+                        <div className="col s12 m6 l6">
                             <div className="card" id="follows-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        Follows Per Month for {`${channelFollows.follows.length}`} Most Recent Follows
+                                        Follows Per Month for {`${channelFollows.follows.length}`}Most Recent Follows
                             </span>
                                     <div id="follows-chart"></div>
                                 </div>
@@ -94,11 +96,11 @@ export default class User extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col s12 m8 l6">
+                        <div className="col s12 m6 l6">
                             <div className="card" id="videos-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        Number of Views for {`${channelVideos.videos.length}`} Most Recent Videos
+                                        Number of Views for {`${channelVideos.videos.length}`}Most Recent Videos
                             </span>
                                     <div id="videos-views-chart"></div>
                                 </div>
