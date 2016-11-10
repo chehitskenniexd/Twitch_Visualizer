@@ -16,6 +16,9 @@ server.use(express.static(path.resolve(__dirname + '/../public')));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
+// Set up the routes
+server.use('/api/channels', require('./routes/channelRoutes'));
+
 server.get('*', function (req, res){
   res.sendFile(path.resolve(__dirname, 'index.html'))
 })
