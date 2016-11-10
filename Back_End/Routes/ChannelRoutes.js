@@ -1,11 +1,12 @@
 'use strict'
 
 const channelRouter = require('express').Router();
-//const db = require('../database/dbIndex');
 const Promise = require('bluebird');
 const http = require('http');
-
+//const axiosUtils = require('../../Utilities/axiosUtils');
+const axios = require('axios');
 const Channels = require('../database/models/channelsModel');
+const clientId = require('../../private/twitch.clientid').clientId;
 
 channelRouter.get('/', (req, res, next) => {
     Channels.findAll({
@@ -22,26 +23,23 @@ channelRouter.get('/:name', (req, res, next) => {
     })
         .then(channel => {
             if (channel) { return channel; }
-            
-            const options = {
-                method: 'GET',
-                host: 'api.twitch.tv',
-                path: `kraken/channels/${req.params.name}`,
-                port: 80,
-                headers: {
-                    'Client-ID': require('../../private/twitch.clientid').default
-                }
-            }
-            // HTTP request to the twitch API
-            Promise.method(options => {
-                return new Promise((resolve, reject) => {
-                    let request = http.request(options, res => {
-                        console.log(res);
-                    })
-                })
-            })
+            console.log('hello2');
+            // HTTP request to the twitch api
+            let url = `https://api.twitch.tv/kraken/channels/${req.params.name}`;
 
-            //Channel.create(newChannel);
+            return axios.get(url, {
+                headers: {
+                    [`Client-ID`]: clientId,
+                    Accept: `application/vnd.twitchtv.v3+json`,
+                    [`x-api-version`]: 3
+                }
+            })
+                .then(res => {
+                    return Channels.create(Object.assign({}, res.data, {created: new Date().now}))
+                        .then(channel => channel)
+                })
+                .catch(err => console.log('Error getting user from api: ', err));
+
         })
         .then(channel => res.json(channel))
         .catch(err => console.log('Error getting user from db: ', err));

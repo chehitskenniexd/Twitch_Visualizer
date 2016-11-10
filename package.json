@@ -4,7 +4,8 @@
   "description": "visualize user data on twitch.tv",
   "main": "Back_End/server.js",
   "scripts": {
-    "start": "webpack -w & nodemon --watch server -e js,html Back_End/server.js",
+    "build-watch": "webpack -w",
+    "start": "webpack && nodemon Back_End/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kenneth Moy",

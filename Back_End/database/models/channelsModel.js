@@ -17,7 +17,7 @@ const channels = db.define('Channels', {
             notEmpty: true
         }
     },
-    created: {
+    created_at: {
         type: Sequelize.DATE
     },
     logo: {
@@ -35,3 +35,6 @@ const channels = db.define('Channels', {
     partner: Sequelize.BOOLEAN
 } // end channel table creation
 )
+
+//export the model
+module.exports = channels;
