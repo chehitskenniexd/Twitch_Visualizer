@@ -26,17 +26,8 @@ const follows = db.define('Follows', {
         type: Sequelize.STRING,
         unique: true,
     }
-}, // end db creation
-{
-    hooks:{
-        beforeCreate: setCombinedFollow
-    }
-}
+} // end db creation
 )
 
 // will be associated via user table
 module.exports = follows;
-
-function setCombinedFollow (follow) {
-    follow.set('combined_follow', `${channel_name}${follower_name}`);
-}
