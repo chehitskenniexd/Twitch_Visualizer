@@ -25,7 +25,6 @@ const db = new Sequelize(dbUrl, {
 module.exports = db;
 
 // sync with models and create if necessary
-const models = require('./models/modelsIndex.js');
 
 function sync(retries = 0, maxRetries=5){
     return db.sync({force:true})

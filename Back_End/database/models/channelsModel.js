@@ -2,10 +2,18 @@
 
 const Sequelize = require('sequelize');
 const db = require('../DBIndex');
+const Follows = require('./followsModel');
 
 const channels = db.define('Channels', {
     name: {
         type: Sequelize.STRING,
+        unique: true,
+        validate: {
+            notEmpty: true
+        }
+    },
+    _id: { // this id is the TWITCH ASSIGNED ID
+        type: Sequelize.INTEGER,
         unique: true,
         validate: {
             notEmpty: true
@@ -17,7 +25,7 @@ const channels = db.define('Channels', {
             notEmpty: true
         }
     },
-    created_at: {
+    created_on: {
         type: Sequelize.DATE
     },
     logo: {
