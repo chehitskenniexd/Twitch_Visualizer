@@ -21,10 +21,6 @@ const follows = db.define('Follows', {
         validate: {
             notEmpty: true
         }
-    },
-    combined_follow: {
-        type: Sequelize.STRING,
-        unique: true,
     }
 } // end db creation
 )
