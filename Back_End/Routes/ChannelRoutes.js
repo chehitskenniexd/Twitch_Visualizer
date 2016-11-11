@@ -5,7 +5,7 @@ const Promise = require('bluebird');
 const http = require('http');
 //const axiosUtils = require('../../Utilities/axiosUtils');
 const axios = require('axios');
-const Channels = require('../database/models/channelsModel');
+const Channels = require('../database/models/channelModel');
 const Follows = require('../database/models/followsModel');
 const clientId = require('../../private/twitch.clientid').clientId;
 const Chalk = require('chalk');
@@ -22,7 +22,8 @@ channelRouter.get('/:name', (req, res, next) => {
     console.log('Getting user data from DB');
     let response = {};
     Channels.findOne({
-        where: { name: req.params.name }
+        where: { name: req.params.name },
+        include: [{ all: true }]
     })
         .then(channel => {
             if (channel) { return Object.assign(response, {}, { channel }); }
@@ -42,9 +43,7 @@ channelRouter.get('/:name', (req, res, next) => {
                     let created_on = res.data.created_at;
                     delete res.data.created_at;
                     const channel = Object.assign({}, res.data, { created_on });
-                    return Object.assign(response, {}, {channel});
-                    // return Channels.create(Object.assign({}, res.data, { created_on }))
-                    // .then(channel => Object.assign({}, response, { channel }))
+                    return Object.assign(response, {}, { channel });
                 })
                 .then(channel => {
                     // if this is the first time, the followers have not been added yet
@@ -65,16 +64,19 @@ channelRouter.get('/:name', (req, res, next) => {
                                     follower_name: follow.user.name
                                 }
                                 return info;
-                                // return Follows.create(creator);
                             })
                             return Object.assign(response, {}, { follows });
                         })
                         .then(infoObj => {
-                            const channelCreate = Channels.create(response.channel);
-                            const followsCreate = response.follows.map(follow =>
-                                Follows.create(follow))
-                            Promise.all([channelCreate, ...followsCreate])
-                                .then(res => res);
+                            Channels.create(response.channel)
+                                .then(channel => {
+                                    const followsCreate = response.follows.map(follow => {
+                                        return Follows.create(follow)
+                                            .then(follow => follow.setChannel(channel));
+                                    })
+                                    Promise.all(followsCreate)
+                                        .then(res => res);
+                                })
                         })
                         .catch(err => console.log('Error getting follows from api: ', err));
                 })
