@@ -18,6 +18,25 @@ channelRouter.get('/', (req, res, next) => {
         .catch(err => console.log('Error getting all channels from db: ', err));
 })
 
+function getAllFollowersForUser(url) {
+    let allFollowers = [];
+    return axios.get(url, {
+        headers: {
+            [`Client-ID`]: clientId,
+            Accept: `application/vnd.twitchtv.v3+json`,
+            [`x-api-version`]: 3
+        }
+    })
+        .then(res => {
+            // if(res.data.follows.length === 100){
+            //     console.log(res.data._links.next)
+            //     allFollowers = getAllFollowersForUser(res.data._links.next)
+            // }
+            return [...res.data.follows];
+        })
+        .catch(err => console.log('Error getting all followers from api: ', err));
+}
+
 channelRouter.get('/:name', (req, res, next) => {
     console.log('Getting user data from DB');
     let response = {};
@@ -48,15 +67,8 @@ channelRouter.get('/:name', (req, res, next) => {
                 .then(channel => {
                     // if this is the first time, the followers have not been added yet
                     let url = `https://api.twitch.tv/kraken/channels/${req.params.name}/follows?limit=100`;
-                    return axios.get(url, {
-                        headers: {
-                            [`Client-ID`]: clientId,
-                            Accept: `application/vnd.twitchtv.v3+json`,
-                            [`x-api-version`]: 3
-                        }
-                    })
-                        .then(res => {
-                            const data = res.data.follows;
+                    return getAllFollowersForUser(url)
+                        .then(data => {
                             const follows = data.map((follow, index) => {
                                 const info = {
                                     channel_name: req.params.name,
