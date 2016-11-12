@@ -42,3 +42,12 @@ export const receiveChannelVideosFromApi = (channel, callback) => dispatch => {
             })
         .catch(err => console.error(`Receiving videos from channel: ${channel} unsuccessful`, err));
 }
+
+export const receiveInfoFromApi = (channel, callback) => dispatch => {
+    axios.get(`/api/channels/${channel}`)
+        .then(res => {
+            dispatch(receiveChannel(res.data.channel));
+            dispatch(receiveChannelFollows(res.data.follows));
+            callback && callback(`${res.data.channel.name}/info`);
+        })
+}

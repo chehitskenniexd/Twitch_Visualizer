@@ -94,7 +94,7 @@ channelRouter.get('/:name', (req, res, next) => {
                 })
                 .catch(err => console.log('Error getting user from api: ', err));
         })
-        .then(channel => res.json(channel))
+        .then(() => res.json(response))
         .catch(err => console.log('Error getting user => ', err));
 })
 

@@ -16,23 +16,71 @@ export default class User extends React.Component {
         }
     }
 
+    componentWillMount() {
+        if (!this.props.channel) {
+            this.props.onLoadChannelInfo(this.props.routeParams.channelName);
+        }
+    }
+
     render() {
         const channel = this.props.channel;
         const channelFollows = this.props.channelFollows;
         const channelVideos = this.props.channelVideos;
         const channelName = this.props.routeParams.channelName;
 
-        if (!Object.keys(channel).length) {
-            this.props.onLoadSearch(channelName);
-            return <div></div>;
-        }
-        if (!Object.keys(channelFollows).length) {
-            this.props.onLoadSearchFollows(channelName);
-            return <div></div>;
-        }
-        if (!Object.keys(channelVideos).length) {
-            this.props.onLoadSearchVideos(channelName);
-            return <div></div>;
+        if (!channel) {
+            console.log('hello from no channel!');
+            return (
+                <div className="row">
+                    <div className="col s12 m12 lg12">
+                        <div className="card">
+                            <div className="loading-bar">
+                                <div className="preloader-wrapper big active">
+                                    <div className="spinner-layer spinner-blue">
+                                        <div className="circle-clipper left">
+                                            <div className="circle"></div>
+                                        </div><div className="gap-patch">
+                                            <div className="circle"></div>
+                                        </div><div className="circle-clipper right">
+                                            <div className="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="spinner-layer spinner-red">
+                                        <div className="circle-clipper left">
+                                            <div className="circle"></div>
+                                        </div><div className="gap-patch">
+                                            <div className="circle"></div>
+                                        </div><div className="circle-clipper right">
+                                            <div className="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="spinner-layer spinner-yellow">
+                                        <div className="circle-clipper left">
+                                            <div className="circle"></div>
+                                        </div><div className="gap-patch">
+                                            <div className="circle"></div>
+                                        </div><div className="circle-clipper right">
+                                            <div className="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="spinner-layer spinner-green">
+                                        <div className="circle-clipper left">
+                                            <div className="circle"></div>
+                                        </div><div className="gap-patch">
+                                            <div className="circle"></div>
+                                        </div><div className="circle-clipper right">
+                                            <div className="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         }
 
         const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
@@ -44,14 +92,14 @@ export default class User extends React.Component {
             }
         })
 
-        const videoViewsDataObj = getNumViewsPerMonth(channelVideos);
-        const videoViewsC3Data = convertViewsVideoObjToC3Data(videoViewsDataObj, 'Number of Views');
-        this.state.videoViewsChartData = c3.generate({
-            bindto: '#videos-views-chart',
-            data: {
-                columns: [videoViewsC3Data]
-            }
-        })
+        // const videoViewsDataObj = getNumViewsPerMonth(channelVideos);
+        // const videoViewsC3Data = convertViewsVideoObjToC3Data(videoViewsDataObj, 'Number of Views');
+        // this.state.videoViewsChartData = c3.generate({
+        //     bindto: '#videos-views-chart',
+        //     data: {
+        //         columns: [videoViewsC3Data]
+        //     }
+        // })
 
         return (
             <div className="user-container">

@@ -4,8 +4,8 @@ export function getNumFollowsPerMonth(channelFollows) {
     // This will convert an array of follows into an object with year/month(int)/count
     // Example: output[2016][0] = numUsers;
     let output = {};
-    channelFollows.follows.forEach(follow => {
-        const created = new Date(follow.created_at);
+    channelFollows.forEach(follow => {
+        const created = new Date(follow.followed_on);
         const year = created.getFullYear();
         const month = created.getMonth();
 
