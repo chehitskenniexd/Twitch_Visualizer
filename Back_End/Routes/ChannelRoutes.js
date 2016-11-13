@@ -92,6 +92,10 @@ channelRouter.get('/:name', (req, res, next) => {
                         })
                         .catch(err => console.log('Error getting follows from api: ', err));
                 })
+                .then(channel => {
+                    // if this is the first time, the videos have not been added yet
+                    let url = `https://api.twitch.tv/kraken/channels/${req.params.name}/videos?limit=100`;
+                })
                 .catch(err => console.log('Error getting user from api: ', err));
         })
         .then(() => res.json(response))
