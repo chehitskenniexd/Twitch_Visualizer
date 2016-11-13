@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react';
+import { getMonthByInt} from './utils.js'
 
 export function getNumFollowsPerMonth(channelFollows) {
     // This will convert an array of follows into an object with year/month(int)/count
@@ -34,14 +35,14 @@ export function getNumViewsPerMonth(channelVideos) {
     return output;
 }
 
-export function convertFollowsMonthObjToC3Data(dataObject, type) {
+export function convertFollowsMonthObjToRechartsData(dataObject, type) {
     // Returns an array of the number of items in a month
     // Remember: Month Obj looks like: { { year: { month: num } } }
-    let valueArray = [`${type}`];
-
+    let valueArray = [];
+    console.log(dataObject);
     for (var year in dataObject) {
         for (var month in dataObject[year]) {
-            valueArray.push(dataObject[year][month]);
+            valueArray.push({date:`${getMonthByInt(month)} ${year}` , num: dataObject[year][month]});
         }
     }
 

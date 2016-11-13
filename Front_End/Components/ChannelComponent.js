@@ -4,9 +4,10 @@ import React from 'react'
 import { convertDateToMDY } from '../../Utilities/utils';
 import {
     getNumFollowsPerMonth, convertFollowsMonthObjToC3Data,
-    getNumViewsPerMonth, convertViewsVideoObjToC3Data, createLoadingBar
+    getNumViewsPerMonth, convertViewsVideoObjToC3Data, createLoadingBar,
+    convertFollowsMonthObjToRechartsData
 } from '../../Utilities/channelUtils';
-
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 export default class User extends React.Component {
     constructor(props) {
         super(props);
@@ -17,26 +18,13 @@ export default class User extends React.Component {
     }
 
     componentWillMount() {
-        console.log('will mount');
         if (!this.props.channel) {
             this.props.onLoadChannelInfo(this.props.routeParams.channelName);
         }
     }
 
     componentDidMount() {
-        console.log('did mount');
-        if (this.props.channelFollows) {
-            const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
-            const followerC3Data = convertFollowsMonthObjToC3Data(followsMonthDataObj, 'Number of Follows');
-            const chartData = c3.generate({
-                bindto: '#follows-chart',
-                data: {
-                    columns: [followerC3Data]
-                }
-            })
 
-            this.setState({ followerChartData: chartData });
-        }
     }
 
     render() {
@@ -59,6 +47,9 @@ export default class User extends React.Component {
         //         columns: [videoViewsC3Data]
         //     }
         // })
+
+        const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
+        const followerRechartsData = convertFollowsMonthObjToRechartsData(followsMonthDataObj, 'Number of Follows');
 
         return (
             <div className="user-container">
@@ -89,13 +80,25 @@ export default class User extends React.Component {
                 </div>
                 <div className="user-information-cards">
                     <div className="row">
-                        <div className="col s12 m6 l6">
+                        <div className="col s12 m12 l12">
                             <div className="card" id="follows-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
                                         {`Follows Per Month for ${channelFollows.length} Most Recent Follows`}
-                            </span>
-                                    <div id="follows-chart"></div>
+                                    </span>
+                                    <div id="follows-chart">
+                                        <LineChart width={661}
+                                            height={300}
+                                            data={followerRechartsData}
+                                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                            <XAxis dataKey="date" />
+                                            <YAxis />
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Line type="monotone" dataKey="num" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                        </LineChart>
+                                    </div>
                                 </div>
                                 <div className="card-reveal">
                                     <span className="card-title activator grey-text text-darken-4">Followers</span>
@@ -108,7 +111,7 @@ export default class User extends React.Component {
                             <div className="card" id="videos-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        Number of Views for {`${channelVideos.videos.length}`}Most Recent Videos
+                                        Number of Views for {`${channelVideos.length}`}Most Recent Videos
                             </span>
                                     <div id="videos-views-chart"></div>
                                 </div>
