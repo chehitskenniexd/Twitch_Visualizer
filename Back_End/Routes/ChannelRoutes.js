@@ -33,6 +33,34 @@ function getAllFollowersForUser(url) {
         })
         .catch(err => console.log('Error getting all followers from api: ', err));
 }
+function resolveInfo (info) {
+    return info;
+}
+
+function recursiveGetAllFollowersForUser(url, info){
+    return new Promise((resolveInfo, reject) => {
+        function recurse(url) {
+            axios.get(url, {
+                headers: {
+                    [`Client-ID`]: clientId,
+                    Accept: `application/vnd.twitchtv.v3+json`,
+                    [`x-api-version`]: 3
+                }
+            })
+                .then(res => {
+                    if(res.data.follows.length > 0){
+                        console.log('Entering the next link: ', res.data._links.next);
+                        info.follows = [...info.follows, ...res.data.follows];
+                        recurse(res.data._links.next);
+                    } else{
+                        resolveInfo(res);
+                    }
+                })
+                .catch(err => console.log('Error getting info: ', err))
+        }
+        recurse(url);
+    })
+}
 
 function getAllVideosForUser(url) {
     let allVideos = [];
@@ -51,7 +79,9 @@ function getAllVideosForUser(url) {
 
 channelRouter.get('/:name', (req, res, next) => {
     console.log('Getting user data from DB');
-    let response = {};
+    let response = {
+        follows: []
+    };
     Channels.findOne({
         where: { name: req.params.name },
         include: [{ all: true }]
@@ -79,17 +109,19 @@ channelRouter.get('/:name', (req, res, next) => {
                 .then(channel => {
                     // if this is the first time, the followers have not been added yet
                     let url = `https://api.twitch.tv/kraken/channels/${req.params.name}/follows?limit=100`;
-                    return getAllFollowersForUser(url)
+                    //return getAllFollowersForUser(url)
+                    return recursiveGetAllFollowersForUser(url, response)
                         .then(data => {
-                            const follows = data.map((follow, index) => {
-                                const info = {
-                                    channel_name: req.params.name,
-                                    followed_on: follow.created_at,
-                                    follower_name: follow.user.name
-                                }
-                                return info;
-                            })
-                            return Object.assign(response, {}, { follows });
+                            console.log(response.follows.length);
+                            // const follows = data.map((follow, index) => {
+                            //     const info = {
+                            //         channel_name: req.params.name,
+                            //         followed_on: follow.created_at,
+                            //         follower_name: follow.user.name
+                            //     }
+                            //     return info;
+                            // })
+                            // return Object.assign(response, {}, { follows });
                         })
                         .then(channel => {
                             // if this is the first time, the videos have not been added yet
