@@ -22,10 +22,6 @@ export default class User extends React.Component {
         }
     }
 
-    componentDidMount() {
-
-    }
-
     render() {
         const channel = this.props.channel;
         const channelFollows = this.props.channelFollows;
@@ -40,10 +36,9 @@ export default class User extends React.Component {
 
         const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
         const followerRechartsData = convertFollowsMonthObjToRechartsData(followsMonthDataObj, 'Number of Follows');
-        // console.log(followerRechartsData);
+
         const videoViewsDataObj = getNumViewsPerMonth(channelVideos);
         const videoViewsRechartsData = convertViewsVideoObjToRechartsData(videoViewsDataObj, 'Number of Views');
-        // console.log(videoViewsRechartsData);
 
         return (
             <div className="user-container">
@@ -78,10 +73,13 @@ export default class User extends React.Component {
                             <div className="card" id="follows-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        {`Follows Per Month for ${channelFollows.length} Follows`}
+                                        {
+                                            channelFollows.length === 1
+                                            ? `Follows Per Month for ${channelFollows.length} Follow`
+                                            : `Follows Per Month for ${channelFollows.length} Follows`}
                                     </span>
                                     <div id="follows-chart">
-                                        <LineChart width={661}
+                                        <LineChart width={830}
                                             height={300}
                                             data={followerRechartsData}
                                             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -103,10 +101,13 @@ export default class User extends React.Component {
                             <div className="card" id="videos-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        {`Number of Views for ${channelVideos.length} Most Recent Videos`}
+                                        {
+                                            channelVideos.length === 1
+                                            ? `Number of Views for ${channelVideos.length} Video`
+                                            : `Number of Views for ${channelVideos.length} Videos`}
                                     </span>
                                     <div id="videos-views-chart">
-                                        <LineChart width={661}
+                                        <LineChart width={830}
                                             height={300}
                                             data={videoViewsRechartsData}
                                             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -120,7 +121,7 @@ export default class User extends React.Component {
                                 </div>
                                 <div className="card-reveal">
                                     <span className="card-title activator grey-text text-darken-4">Videos</span>
-                                    <p>{`Total Videos: ${channelVideos._total}`}</p>
+                                    <p>{`Total Videos: ${channelVideos.length}`}</p>
                                 </div>
                             </div>
                         </div> 
