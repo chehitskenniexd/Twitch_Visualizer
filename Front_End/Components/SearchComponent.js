@@ -18,6 +18,7 @@ export default class Search extends React.Component {
 
     onInputSubmit(event) {
         event.preventDefault();
+        console.log(this.state);
         this.props.onSearchSubmit(this.state.username);
     }
 

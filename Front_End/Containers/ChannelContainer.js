@@ -14,9 +14,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const callback = name => browserHistory.push(`/${name}`);
 const mapDispatchToProps =  (dispatch, ownProps) => ({
-    onLoadSearch: (channel) => dispatch(receiveChannelFromApi(channel, callback)),
-    onLoadSearchFollows: (channel) => dispatch(receiveChannelFollowsFromApi(channel)),
-    onLoadSearchVideos: (channel) => dispatch(receiveChannelVideosFromApi(channel)),
     onLoadChannelInfo: (channel) => dispatch(receiveInfoFromApi(channel))
 });
 
