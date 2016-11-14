@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const db = require('../DBIndex');
 const Follows = require('./followsModel');
 
-const channels = db.define('Channel', {
+const channels = db.define('channel', {
     name: {
         type: Sequelize.STRING,
         unique: true,

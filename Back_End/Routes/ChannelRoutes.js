@@ -57,7 +57,7 @@ channelRouter.get('/:name', (req, res, next) => {
         include: [{ all: true }]
     })
         .then(channel => {
-            if (channel) { return Object.assign(response, {}, { channel }); }
+            if (channel) { return Object.assign(response, {}, { channel, follows: channel.Follows, videos: channel.Videos }); }
             console.log('No DB data, Grabbing user data from the API');
             // HTTP request to the twitch api
             let url = `https://api.twitch.tv/kraken/channels/${req.params.name}`;

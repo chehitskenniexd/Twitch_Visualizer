@@ -46,8 +46,10 @@ export const receiveChannelVideosFromApi = (channel, callback) => dispatch => {
 export const receiveInfoFromApi = (channel, callback) => dispatch => {
     axios.get(`/api/channels/${channel}`)
         .then(res => {
+            console.log(res.data);
             dispatch(receiveChannel(res.data.channel));
             dispatch(receiveChannelFollows(res.data.follows));
+            dispatch(receiveChannelVideos(res.data.videos));
             callback && callback(`${res.data.channel.name}/info`);
         })
 }
