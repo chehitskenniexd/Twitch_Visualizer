@@ -3,9 +3,8 @@
 import React from 'react'
 import { convertDateToMDY } from '../../Utilities/utils';
 import {
-    getNumFollowsPerMonth, convertFollowsMonthObjToC3Data,
-    getNumViewsPerMonth, convertViewsVideoObjToC3Data, createLoadingBar,
-    convertFollowsMonthObjToRechartsData
+    getNumFollowsPerMonth, getNumViewsPerMonth, createLoadingBar,
+    convertFollowsMonthObjToRechartsData, convertViewsVideoObjToRechartsData
 } from '../../Utilities/channelUtils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 export default class User extends React.Component {
@@ -33,23 +32,18 @@ export default class User extends React.Component {
         const channelVideos = this.props.channelVideos;
         const channelName = this.props.routeParams.channelName;
 
-        if (!channel || !channelFollows) {
+        if (!channel || !channelFollows || !channelVideos) {
             return (
                 createLoadingBar()
             );
         }
 
-        // const videoViewsDataObj = getNumViewsPerMonth(channelVideos);
-        // const videoViewsC3Data = convertViewsVideoObjToC3Data(videoViewsDataObj, 'Number of Views');
-        // this.state.videoViewsChartData = c3.generate({
-        //     bindto: '#videos-views-chart',
-        //     data: {
-        //         columns: [videoViewsC3Data]
-        //     }
-        // })
-
         const followsMonthDataObj = getNumFollowsPerMonth(channelFollows);
         const followerRechartsData = convertFollowsMonthObjToRechartsData(followsMonthDataObj, 'Number of Follows');
+        // console.log(followerRechartsData);
+        const videoViewsDataObj = getNumViewsPerMonth(channelVideos);
+        const videoViewsRechartsData = convertViewsVideoObjToRechartsData(videoViewsDataObj, 'Number of Views');
+        // console.log(videoViewsRechartsData);
 
         return (
             <div className="user-container">
@@ -93,10 +87,9 @@ export default class User extends React.Component {
                                             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                             <XAxis dataKey="date" />
                                             <YAxis />
-                                            <CartesianGrid strokeDasharray="3 3" />
                                             <Tooltip />
                                             <Legend />
-                                            <Line type="monotone" dataKey="num" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                            <Line type="monotone" name="Num Follows Per Month" dataKey="num" stroke="#6441a4" activeDot={{ r: 8 }} />
                                         </LineChart>
                                     </div>
                                 </div>
@@ -106,14 +99,24 @@ export default class User extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        {/*
-                        <div className="col s12 m6 l6">
+                        <div className="col s12 m12 l12">
                             <div className="card" id="videos-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        Number of Views for {`${channelVideos.length}`}Most Recent Videos
-                            </span>
-                                    <div id="videos-views-chart"></div>
+                                        {`Number of Views for ${channelVideos.length} Most Recent Videos`}
+                                    </span>
+                                    <div id="videos-views-chart">
+                                        <LineChart width={661}
+                                            height={300}
+                                            data={videoViewsRechartsData}
+                                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                            <XAxis dataKey="title" />
+                                            <YAxis />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Line type="monotone" name="Video Views" dataKey="views" stroke="#6441a4" />
+                                        </LineChart>
+                                    </div>
                                 </div>
                                 <div className="card-reveal">
                                     <span className="card-title activator grey-text text-darken-4">Videos</span>
@@ -121,7 +124,6 @@ export default class User extends React.Component {
                                 </div>
                             </div>
                         </div> 
-                        */}
                     </div>
                 </div>
             </div>
