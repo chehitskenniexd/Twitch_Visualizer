@@ -19,26 +19,8 @@ channelRouter.get('/', (req, res, next) => {
         .catch(err => console.log('Error getting all channels from db: ', err));
 })
 
-function getAllFollowersForUser(url) {
-    let allFollowers = [];
-    return axios.get(url, {
-        headers: {
-            [`Client-ID`]: clientId,
-            Accept: `application/vnd.twitchtv.v3+json`,
-            [`x-api-version`]: 3
-        }
-    })
-        .then(res => {
-            return [...res.data.follows];
-        })
-        .catch(err => console.log('Error getting all followers from api: ', err));
-}
-function resolveInfo (info) {
-    return info;
-}
-
 function recursiveGetAllFollowersForUser(url, info){
-    return new Promise((resolveInfo, reject) => {
+    return new Promise((resolve, reject) => {
         function recurse(url) {
             axios.get(url, {
                 headers: {
@@ -53,7 +35,7 @@ function recursiveGetAllFollowersForUser(url, info){
                         info.follows = [...info.follows, ...res.data.follows];
                         recurse(res.data._links.next);
                     } else{
-                        resolveInfo(res);
+                        resolve(res);
                     }
                 })
                 .catch(err => console.log('Error getting info: ', err))
@@ -62,25 +44,36 @@ function recursiveGetAllFollowersForUser(url, info){
     })
 }
 
-function getAllVideosForUser(url) {
-    let allVideos = [];
-    return axios.get(url, {
-        headers: {
-            [`Client-ID`]: clientId,
-            Accept: `application/vnd.twitchtv.v3+json`,
-            [`x-api-version`]: 3
+function recursiveGetAllVideosForUser(url, info){
+    return new Promise((resolve, reject) => {
+        function recurse(url) {
+            axios.get(url, {
+                headers: {
+                    [`Client-ID`]: clientId,
+                    Accept: `application/vnd.twitchtv.v3+json`,
+                    [`x-api-version`]: 3
+                }
+            })
+                .then(res => {
+                    if(res.data.videos.length > 0){
+                        console.log('Entering the next link: ', res.data._links.next);
+                        info.videos = [...info.videos, ...res.data.videos];
+                        recurse(res.data._links.next);
+                    } else{
+                        resolve(res);
+                    }
+                })
+                .catch(err => console.log('Error getting info: ', err))
         }
+        recurse(url);
     })
-        .then(res => {
-            return [...res.data.videos];
-        })
-        .catch(err => console.log('Error getting all videos from api: ', err));
 }
 
 channelRouter.get('/:name', (req, res, next) => {
     console.log('Getting user data from DB');
     let response = {
-        follows: []
+        follows: [],
+        videos: []
     };
     Channels.findOne({
         where: { name: req.params.name },
@@ -113,20 +106,19 @@ channelRouter.get('/:name', (req, res, next) => {
                     return recursiveGetAllFollowersForUser(url, response)
                         .then(data => {
                             response.follows = response.follows.map((follow, index) => {
-                                const info = {
+                                return {
                                     channel_name: req.params.name,
                                     followed_on: follow.created_at,
                                     follower_name: follow.user.name
                                 }
-                                return info;
                             })
                         })
-                        .then(channel => {
+                        .then(() => {
                             // if this is the first time, the videos have not been added yet
                             let url = `https://api.twitch.tv/kraken/channels/${req.params.name}/videos?limit=100`;
-                            return getAllVideosForUser(url)
+                            return recursiveGetAllVideosForUser(url, response)
                                 .then(data => {
-                                    const videos = data.map((video, index) => {
+                                    response.videos = response.videos.map((video, index) => {
                                         return {
                                             title: video.title,
                                             views: video.views,
@@ -136,10 +128,9 @@ channelRouter.get('/:name', (req, res, next) => {
                                             url: video.url
                                         }
                                     })
-                                    return Object.assign(response, {}, { videos });
                                 })
                         })
-                        .then(infoObj => {
+                        .then(() => {
                             Channels.create(response.channel)
                                 .then(channel => {
                                     const followsCreate = response.follows.map(follow => {
