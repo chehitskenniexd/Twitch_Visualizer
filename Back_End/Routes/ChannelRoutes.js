@@ -7,6 +7,7 @@ const http = require('http');
 const axios = require('axios');
 const Channels = require('../database/models/channelModel');
 const Follows = require('../database/models/followsModel');
+const Videos = require('../database/models/videosModel');
 const clientId = require('../../private/twitch.clientid').clientId;
 const Chalk = require('chalk');
 
@@ -28,13 +29,24 @@ function getAllFollowersForUser(url) {
         }
     })
         .then(res => {
-            // if(res.data.follows.length === 100){
-            //     console.log(res.data._links.next)
-            //     allFollowers = getAllFollowersForUser(res.data._links.next)
-            // }
             return [...res.data.follows];
         })
         .catch(err => console.log('Error getting all followers from api: ', err));
+}
+
+function getAllVideosForUser(url) {
+    let allVideos = [];
+    return axios.get(url, {
+        headers: {
+            [`Client-ID`]: clientId,
+            Accept: `application/vnd.twitchtv.v3+json`,
+            [`x-api-version`]: 3
+        }
+    })
+        .then(res => {
+            return [...res.data.videos];
+        })
+        .catch(err => console.log('Error getting all videos from api: ', err));
 }
 
 channelRouter.get('/:name', (req, res, next) => {
@@ -79,6 +91,24 @@ channelRouter.get('/:name', (req, res, next) => {
                             })
                             return Object.assign(response, {}, { follows });
                         })
+                        .then(channel => {
+                            // if this is the first time, the videos have not been added yet
+                            let url = `https://api.twitch.tv/kraken/channels/${req.params.name}/videos?limit=100`;
+                            return getAllVideosForUser(url)
+                                .then(data => {
+                                    const videos = data.map((video, index) => {
+                                        return {
+                                            title: video.title,
+                                            views: video.views,
+                                            created_on: video.created_at,
+                                            game: video.game,
+                                            length: video.length,
+                                            url: video.url
+                                        }
+                                    })
+                                    return Object.assign(response, {}, { videos });
+                                })
+                        })
                         .then(infoObj => {
                             Channels.create(response.channel)
                                 .then(channel => {
@@ -86,15 +116,15 @@ channelRouter.get('/:name', (req, res, next) => {
                                         return Follows.create(follow)
                                             .then(follow => follow.setChannel(channel));
                                     })
-                                    Promise.all(followsCreate)
+                                    const videosCreate = response.videos.map(video => {
+                                        return Videos.create(video)
+                                            .then(video => video.setChannel(channel));
+                                    })
+                                    Promise.all([...followsCreate, ...videosCreate])
                                         .then(res => res);
                                 })
                         })
                         .catch(err => console.log('Error getting follows from api: ', err));
-                })
-                .then(channel => {
-                    // if this is the first time, the videos have not been added yet
-                    let url = `https://api.twitch.tv/kraken/channels/${req.params.name}/videos?limit=100`;
                 })
                 .catch(err => console.log('Error getting user from api: ', err));
         })

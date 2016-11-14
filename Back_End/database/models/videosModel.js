@@ -24,8 +24,12 @@ const videos = db.define('Videos', {
     },
     length: {
         type: Sequelize.INTEGER,
-        validate:{
-            notNull: true
+        allowNull: false
+    },
+    url: {
+        type: Sequelize.TEXT,
+        validate: {
+            notEmpty: true
         }
     }
 } // end db creation
