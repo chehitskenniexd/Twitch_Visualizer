@@ -112,16 +112,14 @@ channelRouter.get('/:name', (req, res, next) => {
                     //return getAllFollowersForUser(url)
                     return recursiveGetAllFollowersForUser(url, response)
                         .then(data => {
-                            console.log(response.follows.length);
-                            // const follows = data.map((follow, index) => {
-                            //     const info = {
-                            //         channel_name: req.params.name,
-                            //         followed_on: follow.created_at,
-                            //         follower_name: follow.user.name
-                            //     }
-                            //     return info;
-                            // })
-                            // return Object.assign(response, {}, { follows });
+                            response.follows = response.follows.map((follow, index) => {
+                                const info = {
+                                    channel_name: req.params.name,
+                                    followed_on: follow.created_at,
+                                    follower_name: follow.user.name
+                                }
+                                return info;
+                            })
                         })
                         .then(channel => {
                             // if this is the first time, the videos have not been added yet

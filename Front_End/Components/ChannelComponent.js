@@ -78,7 +78,7 @@ export default class User extends React.Component {
                             <div className="card" id="follows-info-card">
                                 <div className="card-content">
                                     <span className="card-title activator grey-text text-darken-4">
-                                        {`Follows Per Month for ${channelFollows.length} Most Recent Follows`}
+                                        {`Follows Per Month for ${channelFollows.length} Follows`}
                                     </span>
                                     <div id="follows-chart">
                                         <LineChart width={661}
